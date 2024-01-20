@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Index</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" 
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"/>
+    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/css1/text2text.css" />
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <img src="/static/images/logo.png" alt="Braille Logo" />
+        <ul>
+          <li> <a href="/"><u>Home</u></a></li>
+          <li><a href="/learnbraille"><u>Learn Braille</u></a></li>
+        </ul>
+      </nav>
+    </header>
+    <div class="container">
+      <h2 class="mt-4 text-center"><strong>Braille Image to English Converter</strong></h2>
+      <br />
+      <form method="post" enctype="multipart/form-data">
+          <div class="custom-file" style="width: 30% !important">
+            <label for="formFile" class="form-label">📁 Upload new File</label>
+            <input
+                type="file"
+                id="imageInput"
+                class="form-control form-control-sm"
+                name="image"
+                accept="image/*"
+                required
+              />
+          </div>
+        <button
+          type="submit"
+          class="btn"
+          id="upload"
+          style="
+            color: black;
+            font-weight: 600;
+            border: 2px solid black;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+          "
+        >
+          Upload
+        </button>
+      </form>
+      
+      <div id="img-container"></div>
+    <br>
+      <div class="container">
+        <div style="display: flex">
+          <textarea class="form-control" id="braille-output-text" rows="8" readonly placeholder="Output will appear here"
+            style="
+              font-size: 20px;
+              height: 400px;
+              background-color: white;
+              border: 2px solid black;
+              border-radius: 0px;
+              margin-left: 10px;
+            "></textarea>
+        </div>
+        <br/>
+        
+        <div class="d-flex justify-content-between">
+      <button
+        class="btn"
+        onclick="speak_Text()"
+        style="
+          color: black;
+          font-weight: 600;
+          border: 2px solid black;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+        "
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-music-player"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3zm1 0v3h6V3H5zm3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+          />
+          <path
+            d="M11 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm-3 2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
+          />
+          <path
+            d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"
+          />
+        </svg>
+        Click To Play Audio
+      </button>
+        
+          <button class="btn text-center" onclick="clearTextFields()"
+            style="
+              color: black;
+              font-weight: 600;
+              border: 2px solid black;
+              -webkit-backface-visibility: hidden;
+              backface-visibility: hidden;
+            "> Clear Text </button>
+        </div>
+        <br /> <br />
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      const imgContainer = document.getElementById("img-container");
+
+      function speak_Text() {
+        if ("speechSynthesis" in window) {
+          const utterance = new SpeechSynthesisUtterance();
+          utterance.text = output.value;
+          utterance.voice = speechSynthesis.getVoices()[0];
+          speechSynthesis.speak(utterance);
+        } else {
+          console.log("Speech synthesis not supported in this browser.");
+        }
+      }
+
+      function clearTextFields() {
+        document.getElementById("braille-output-text").value = "";
+        if (imgContainer) {imgContainer.innerHTML = "";  }
+      }
+      const output = document.getElementById("braille-output-text");
+      const upload = document.getElementById("upload");
+
+      upload.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        // Check if a file has been selected
+        if (!imageInput.files || imageInput.files.length === 0) {
+            alert("Please select an image before uploading.");
+            return;
+        }
+        clearTextFields();
+        output.value = 'Translating....';
+
+        const formData = new FormData();
+        formData.append("image", imageInput.files[0]);
+        
+        // Fetch the image result from the Flask server
+        fetch("/brailleImageTranslate", {
+          method: "POST",
+          body: formData, // Use FormData to send the form data
+        })
+          .then((response) => response.json()) // Parse the response as JSON
+          .then((data) => {
+            // Display the image result in the image_result textarea
+            const image=URL.createObjectURL(imageInput.files[0]);
+            // Display the image in an <img> tag within the imgContainer
+            const imgContainer = document.getElementById("img-container");
+            const newimg=document.createElement('img');
+            newimg.src=image
+            newimg.style.width = "800px";
+            newimg.style.height = "auto";
+            imgContainer.appendChild(newimg);
+            output.value = data.result || data.error;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+
+      
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
