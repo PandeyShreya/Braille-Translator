@@ -10,3 +10,16 @@ Braille Image Processing using CNN.
 ![image](https://github.com/PandeyShreya/Braille-Translator/assets/97798682/1b5c4101-da00-49cf-bd60-79be05bf9ac6)
 
 # 2. English Text to Braille:
+Grade 1:
+![image](https://github.com/PandeyShreya/Braille-Translator/assets/97798682/93939fac-be08-4df4-918b-79bf87379339)
+Grade 2:
+![image](https://github.com/PandeyShreya/Braille-Translator/assets/97798682/70616676-7ab2-40db-8ad0-eae9f81cdced)
+
+# 3. Braille Text to English:
+![image](https://github.com/PandeyShreya/Braille-Translator/assets/97798682/937140c7-4483-49fd-88e1-b144ba95c289)
+
+# 4. English Image to Braille:
+![image](https://github.com/PandeyShreya/Braille-Translator/assets/97798682/955d7f8e-e679-4581-ac0f-ba0f82d6ea61)
+
+# 5. Braille Image to English:
+![image](https://github.com/PandeyShreya/Braille-Translator/assets/97798682/35274814-d571-4f7e-b2e7-ffc15b4a562e)
