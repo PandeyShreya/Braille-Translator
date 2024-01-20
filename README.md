@@ -23,3 +23,6 @@ Grade 2:
 
 # 5. Braille Image to English:
 ![image](https://github.com/PandeyShreya/Braille-Translator/assets/97798682/35274814-d571-4f7e-b2e7-ffc15b4a562e)
+
+# 6. LearnBraille:
+![image](https://github.com/PandeyShreya/Braille-Translator/assets/97798682/02dd1ab9-d026-4331-8660-134ac54553a8)
