@@ -46,13 +46,13 @@ def braille_img_to_eng():
 @app.route('/translateengtext1', methods=['POST'])
 def translate_engtext_grade1():
     braille_input = request.form.get('textInput')
-    translation_result = alphaTextToBraille.translate_to_grade1(braille_input)
+    translation_result = alphaTextToBraille.translate(braille_input,1)
     return jsonify({'result': translation_result})
 
 @app.route('/translateengtext2', methods=['POST'])
 def translate_engtext_grade2():
     braille_input = request.form.get('textInput')
-    translation_result = alphaTextToBraille.translate(braille_input)
+    translation_result = alphaTextToBraille.translate(braille_input,2)
     return jsonify({'result': translation_result})
 
 @app.route('/translatebrailletext',methods=['POST'])
@@ -78,9 +78,6 @@ def engImageTranslate():
         return jsonify({'result': braille_text})
     else:
         return jsonify({'error': 'No image file provided.'})
-    
-def user_text(input):
-    return alphaTextToBraille.translate_to_grade1(input)
 
 @app.route('/brailleImageTranslate', methods=['POST'])
 def brailleImageTranslate():
@@ -95,9 +92,6 @@ def brailleImageTranslate():
         # braille_image = Image.open(image_path)
         predictor = PredictBraille()
         result = predictor.predict(image_path)
-        # print(result)
-        # # Call the function to handle the extracted text
-        # result = user_text(braille_text)
 
         return jsonify({'result': result})
     else:

@@ -8,7 +8,7 @@ UNRECOGNIZED = '?'
 
 def extract_words(string):
     # Split up a sentence based on whitespace (" ") and new line ("\n") chars.
-    words = string.split(" ")
+    words = string.split("  ")
     result = []
     for word in words:
         temp = word.split("\n")
@@ -112,13 +112,16 @@ def build_alpha_word(trimmed_word, shavings, index, alpha):
 def translate(string):
     # Convert braille to alphabet based text.
     alpha = ""
-    words = extract_words(string)
-    for word in words:
-        word = numbers_handler(word)
-        trimmed_word = trim(word)  # Remove punctuation.
-        untrimmed_word = word
-        index = untrimmed_word.find(trimmed_word)
-        shavings = untrimmed_word.replace(trimmed_word, "")
-        alpha = build_alpha_word(trimmed_word, shavings, index, alpha) + " "
-    alpha = capital_letters_handler(alpha[:-1])
+    lines=string.splitlines()
+    for line in lines:
+        words = extract_words(line)
+        for word in words:
+            word = numbers_handler(word)
+            trimmed_word = trim(word)  # Remove punctuation.
+            untrimmed_word = word
+            index = untrimmed_word.find(trimmed_word)
+            shavings = untrimmed_word.replace(trimmed_word, "")
+            alpha = build_alpha_word(trimmed_word, shavings, index, alpha) + " "
+        alpha = capital_letters_handler(alpha[:-1])
+        alpha+="\n"
     return fix_exceptions(alpha)

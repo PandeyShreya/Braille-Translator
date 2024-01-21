@@ -100,10 +100,10 @@ def char_to_braille(char):
         print("Unrecognized Symbol:", char, "with UTF code:", find_utf_code(char))
         return UNRECOGNIZED
 
-#grade 2 mapping
-def word_to_braille(word):
+#word to braille mapping
+def word_to_braille(word,grade):
     # Convert an alphabetic word to braille.
-    if word in mapAlphaToBraille.contractions:
+    if grade==2 and word in mapAlphaToBraille.contractions:
         return mapAlphaToBraille.contractions.get(word)
     else:
         result = ""
@@ -111,67 +111,33 @@ def word_to_braille(word):
             result += char_to_braille(char)
         return result
 
-#grade 1 mapping    
-def word_to_braille_grade1(word):
-    # Convert an alphabetic word to braille.
-    result = ""
-    for char in word:
-        result += char_to_braille(char)
-    return result
-
-def build_braille_word(trimmed_word, shavings, index, braille):
+def build_braille_word(trimmed_word, shavings, index, braille,grade):
     # Translate a trimmed word to braille then re-attach the shavings.
     if shavings == "":
-        braille += word_to_braille(trimmed_word)
+        braille += word_to_braille(trimmed_word,grade)
     else:
         for i in range(0, len(shavings)):
             if i == index and trimmed_word is not "":
-                braille += word_to_braille(trimmed_word)
-            braille += word_to_braille(shavings[i])
+                braille += word_to_braille(trimmed_word,grade)
+            braille += word_to_braille(shavings[i],grade)
         if index == len(shavings):  # If the shavings are all at the beginning.
-            braille += word_to_braille(trimmed_word)
+            braille += word_to_braille(trimmed_word,grade)
     return braille
 
-def build_braille_word_grade1(trimmed_word, shavings, index, braille):
-    # Translate a trimmed word to braille then re-attach the shavings.
-    if shavings == "":
-        braille += word_to_braille_grade1(trimmed_word)
-    else:
-        for i in range(0, len(shavings)):
-            if i == index and trimmed_word is not "":
-                braille += word_to_braille_grade1(trimmed_word)
-            braille += word_to_braille_grade1(shavings[i])
-        if index == len(shavings):  # If the shavings are all at the beginning.
-            braille += word_to_braille_grade1(trimmed_word)
-    return braille
-
-def translate(string):
-    # Convert alphabetic text to braille.
+def translate(string,grade):
     braille = ""
-    words = extract_words(string)
-    for word in words:
-        word = numbers_handler(word)
-        word = capital_letters_handler(word)
-        trimmed_word = trim(word)  # Remove punctuation (ex: change dog?" to dog)
-        untrimmed_word = word
-        index = untrimmed_word.find(trimmed_word)
-        shavings = untrimmed_word.replace(trimmed_word, "")
-        braille = build_braille_word(trimmed_word, shavings, index, braille) + "  "
-    return braille[:-2]  # Remove the final space that was added.
-
-def translate_to_grade1(string):
-    # Convert alphabetic text to Grade 1 Braille.
-    braille = ""
-    words = extract_words(string)
-    for word in words:
-        word = numbers_handler(word)
-        word = capital_letters_handler(word)
-        trimmed_word = trim(word)
-        untrimmed_word = word
-        index = untrimmed_word.find(trimmed_word)
-        shavings = untrimmed_word.replace(trimmed_word, "")
-        braille = build_braille_word_grade1(trimmed_word, shavings, index, braille) + "  "
-
+    lines = string.splitlines()
+    for line in lines:
+        words = extract_words(line)
+        for word in words:
+            word = numbers_handler(word)
+            word = capital_letters_handler(word)
+            trimmed_word = trim(word)
+            untrimmed_word = word
+            index = untrimmed_word.find(trimmed_word)
+            shavings = untrimmed_word.replace(trimmed_word, "")
+            braille = build_braille_word(trimmed_word, shavings, index, braille,grade) + "  "
+        braille +="\n"
     return braille[:-2]
 
 '''
