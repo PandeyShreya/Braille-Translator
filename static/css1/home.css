@@ -316,24 +316,115 @@ ul{
 
 
 
-@media only screen and (max-width: 600px) {
-    header{
-        flex-direction: column;
+@media only screen and (max-width: 768px) {
+    header h1 {
+        font-size: 60px;
+        margin-top: 100px;
     }
-    nav{
-        flex-direction: column;
+
+    header p {
+        font-size: 16px;
     }
-    main{
-        flex-direction: column;
+
+    header a.cta {
+        padding: 0.8rem 1.5rem;
     }
-    section{
+
+    nav {
+        padding: 20px 5%;
+    }
+
+    nav img {
+        width: 60px;
+        height: 50px;
+    }
+
+    nav ul {
+        margin-top: 1rem;
+    }
+
+    nav a {
+        font-size: 1rem;
+        margin: 0.5rem 0.8rem;
+    }
+
+    button#start,
+    button#stop {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    section h2 {
+        font-size: 45px;
+        margin-bottom: 3rem;
+    }
+
+    .service {
+        background-color: #fff3f3;
         width: 100%;
+        margin: 0 0 2rem;
+        text-align: center top;
     }
-    .service{
+
+    .service img {
+        width: 70%;
+        margin: 1rem;
+    }
+
+    footer a {
+        margin-top: 0.5rem;
+    }
+
+    .footer-col {
+        width: 50%;
+        margin-bottom: 30px;
+    }
+}
+
+@media only screen and (max-width: 574px) {
+    header h1 {
+        font-size: 40px;
+        margin-top: 80px;
+    }
+
+    header p {
+        font-size: 14px;
+    }
+
+    header a.cta {
+        padding: 0.6rem 1rem;
+    }
+
+    nav img {
+        width: 50px;
+        height: 40px;
+    }
+
+    nav a {
+        font-size: 0.9rem;
+        margin: 0.3rem 0.5rem;
+    }
+
+    section h2 {
+        font-size: 35px;
+        margin-bottom: 2rem;
+    }
+
+    .service img {
+        width: 80%;
+    }
+
+    .services-container {
+        justify-content: space-around;
+    }
+
+    .service {
+        width: 48%; /* Display two items in a row */
+        margin: 0 1% 2rem; /* Adjust margins between items */
+    }
+
+    .footer-col {
         width: 100%;
-        margin: 2rem 0;
-    }
-    footer{
-        flex-direction: column;
     }
 }

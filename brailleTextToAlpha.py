@@ -3,6 +3,7 @@ from dictionary import alphaToBraille as mapAlphaToBraille, brailleToAlpha as ma
 
 CAPITAL = chr(10272)  # ⠠
 NUMBER = chr(10300)  # ⠼
+SYMBOL = '⠈'
 UNRECOGNIZED = '?'
 
 
@@ -44,6 +45,21 @@ def numbers_handler(word):
             result += word[i]
     return result
 
+def symbol_handler(word):
+    # Translate braille numbers to standard number notation.
+    if word == "":
+        return word
+    result = ""
+    is_symbol = False
+    for i in range(0, len(word)):
+        if word[i] == NUMBER:
+            is_symbol = True
+            continue
+        if is_symbol and word[i] in mapBrailleToAlpha.punctuation:
+            result += mapBrailleToAlpha.punctuation.get(word[i])
+        else:
+            result += word[i]
+    return result
 
 def capital_letters_handler(word):
     # Capitalize letters after the capitalization escape code.
