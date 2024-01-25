@@ -19,14 +19,6 @@ def home():
 def learnbraille():
     return render_template('learnbraille.html')
 
-@app.route('/brailletoeng')
-def braille_to_eng():
-    return render_template('brailletoeng.html')
-
-@app.route('/engtobraille')
-def eng_to_braille():
-    return render_template('engtobraille.html')
-
 @app.route('/engtext2braille', methods=['POST'])
 def eng_text_to_braille():
     return render_template('engtext2braille.html')
@@ -60,18 +52,14 @@ def translate_brailletext():
     print("Braille Translation")
     braille_input = request.form.get('textInput')
     result=brailleTextToAlpha.translate(braille_input)
-    print(result)
-
     return jsonify({'result': result})
 
 @app.route('/engImageTranslate', methods=['POST'])
 def engImageTranslate():
     if 'image' in request.files:
         uploaded_image = request.files['image']
-        # Save the uploaded image to a temporary file
-        image_path = 'temp_image.png'  # Temporary path for the uploaded image
+        image_path = 'temp_image.png'   # Save the uploaded image to a temporary file
         uploaded_image.save(image_path)
-
         # Perform OCR on the uploaded image
         braille_image = Image.open(image_path)
         braille_text = pytesseract.image_to_string(braille_image)
@@ -82,17 +70,12 @@ def engImageTranslate():
 @app.route('/brailleImageTranslate', methods=['POST'])
 def brailleImageTranslate():
     if 'image' in request.files:
-        print("Hey")
         uploaded_image = request.files['image']
-        # Save the uploaded image to a temporary file
-        image_path = 'temp_image.png'  # Temporary path for the uploaded image
+        image_path = 'temp_image.png'  # Save the uploaded image to a temporary file
         uploaded_image.save(image_path)
-
         # Perform OCR on the uploaded image
-        # braille_image = Image.open(image_path)
         predictor = PredictBraille()
         result = predictor.predict(image_path)
-
         return jsonify({'result': result})
     else:
         return jsonify({'error': 'No image file provided.'})
